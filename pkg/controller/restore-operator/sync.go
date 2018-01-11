@@ -16,6 +16,7 @@ package controller
 
 import (
 	"fmt"
+	"time"
 
 	api "github.com/coreos/etcd-operator/pkg/apis/etcd/v1beta2"
 	"github.com/coreos/etcd-operator/pkg/backup/backupapi"
@@ -183,6 +184,7 @@ func (r *Restore) prepareSeed(er *api.EtcdRestore) (err error) {
 		return fmt.Errorf("failed to create restored EtcdCluster (%s/%s): %v", r.namespace, clusterName, err)
 	}
 
+	time.Sleep(30 * time.Second)
 	err = r.createSeedMember(ec, r.mySvcAddr, clusterName, ec.AsOwner())
 	if err != nil {
 		return fmt.Errorf("failed to create seed member for cluster (%s): %v", clusterName, err)
